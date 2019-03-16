@@ -61,13 +61,26 @@ curl http://localhost:8080/transfer/B -H "Content-Type: application/json" --data
 
 ```
 
+A full integration with Swagger2 via SpringFox has been provided. Therefore, alternatively, one can use SwaggerUI to test out the Wallet REST API by simply accessing: "_http://localhost:8080/swagger-ui.html_". 
+
+All available payload _"models"_ can be directly visualised via Swagger as per:
+
+
+![Alt text](img/swagger-screenshot1.png?raw=true "Wallet models")
+
+The _"wallet-controller"_ endpoints listed via Swagger are:
+
+![Alt text](img/swagger-screenshot2.png?raw=true "Wallet controller endpoints")
+ 
+
+
 __Miscellaneous:__
 
 The application is based on Spring Boot framework using Java8 streams for manipulating and calculating the trust indicator. 
 
-Java Lombok library has been used to cut the boilerplace code needed for Java _"@Data"_ class and other design patterns, such as _"@Builder" and immutable DTO (Data Transfer Object).
+Java Lombok library has been used to cut the boilerplace code needed for Java _"@Data"_ class and other design patterns, such as _"@Builder"_ and immutable DTO (Data Transfer Object).
 
-The application can be easily executed via Java cli or inside of an IDE, such as Intellij (_Note:_ for Intellij IDEA, Lombok plugin is required)
+The application can be easily executed via Java cli or inside of an IDE, such as Intellij (_Note:_ for Intellij IDEA, Lombok plugin is required). Alternatively, one can use SwaggerUI that has been provided in order to invoke _WalletController_ endpoints directly. 
 
 
 

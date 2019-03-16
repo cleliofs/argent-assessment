@@ -19,6 +19,10 @@ import static com.argent.assessment.dto.WalletTransferResponseDto.TransferStatus
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
+/**
+ * Spring MVC Rest controller to provide API endpoints to interact with Wallet.
+ *
+ */
 @Slf4j
 @RestController
 public class WalletController {

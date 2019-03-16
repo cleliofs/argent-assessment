@@ -13,6 +13,11 @@ import java.util.stream.Collectors;
 import static java.lang.Integer.valueOf;
 import static java.lang.String.format;
 
+/**
+ * Trust indicator wallet that provides capability to compute the trust indicator between
+ * owner's wallet (account/address) and a certain address before sending funds.
+ *
+ */
 @Slf4j
 @Component
 public class TrustIndicatorWallet {
