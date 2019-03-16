@@ -1,7 +1,7 @@
 package com.argent.assessment.controller;
 
 import com.argent.assessment.data.Address;
-import com.argent.assessment.data.TrustIndicator;
+import com.argent.assessment.dto.TrustIndicatorDto;
 import com.argent.assessment.data.TrustIndicatorWallet;
 import com.argent.assessment.dto.WalletInfoDto;
 import com.argent.assessment.dto.WalletTransferRequestDto;
@@ -35,18 +35,18 @@ public class WalletController {
     }
 
     @RequestMapping(value = "/trustIndicatorFromOwnerAddress", produces = APPLICATION_JSON_VALUE)
-    public TrustIndicator trustIndicatorFromOwnerAddress(@RequestParam(value = "addressTo") final String addressTo) {
+    public TrustIndicatorDto trustIndicatorFromOwnerAddress(@RequestParam(value = "addressTo") final String addressTo) {
         final int trustLevel = trustIndicatorWallet.getTrustIndicatorToAddress(new Address(addressTo, false));
-        return new TrustIndicator(trustIndicatorWallet.getAddressOwner(), addressTo, trustLevel);
+        return new TrustIndicatorDto(trustIndicatorWallet.getAddressOwner(), addressTo, trustLevel);
     }
 
     @RequestMapping(value = "/trustIndicatorFromTwoAddresses", produces = APPLICATION_JSON_VALUE)
-    public TrustIndicator trustIndicatorFromTwoAddresses(@RequestParam(value = "addressFrom") final String addressFrom,
-                                                         @RequestParam(value = "addressTo") final String addressTo) {
+    public TrustIndicatorDto trustIndicatorFromTwoAddresses(@RequestParam(value = "addressFrom") final String addressFrom,
+                                                            @RequestParam(value = "addressTo") final String addressTo) {
         final int trustLevel = trustIndicatorWallet.getTrustIndicatorBetweenAddresses(
                 new Address(addressFrom, false),
                 new Address(addressTo, false));
-        return new TrustIndicator(trustIndicatorWallet.getAddressOwner(), addressTo, trustLevel);
+        return new TrustIndicatorDto(trustIndicatorWallet.getAddressOwner(), addressTo, trustLevel);
     }
 
     @RequestMapping(value = "/transfer/{addressTo}", method = POST, produces = APPLICATION_JSON_VALUE)

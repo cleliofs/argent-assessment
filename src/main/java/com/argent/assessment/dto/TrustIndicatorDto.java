@@ -1,9 +1,9 @@
-package com.argent.assessment.data;
+package com.argent.assessment.dto;
 
 import lombok.Data;
 
 @Data
-public class TrustIndicator {
+public class TrustIndicatorDto {
 
     private final String addressFrom;
     private final String addressTo;
