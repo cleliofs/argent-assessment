@@ -27,7 +27,7 @@ public class TrustIndicatorWallet {
 
     public TrustIndicatorWallet(@Value("${wallet.address.owner}") String addressOwner,
                                 @Value("${wallet.trustIndicator.minimum:0}") int trustIndicatorMinimum,
-                                @Value("${wallet.trustIndicator.exclusion}") boolean walletTrustIndicatorCalculationExclusion) {
+                                @Value("${wallet.trustIndicator.calculation.exclusion}") boolean walletTrustIndicatorCalculationExclusion) {
         this.addressOwner = addressOwner;
         this.trustIndicatorMinimum = trustIndicatorMinimum;
         this.walletTrustIndicatorCalculationExclusion = walletTrustIndicatorCalculationExclusion;
@@ -50,7 +50,7 @@ public class TrustIndicatorWallet {
         this.addressOwner = newAddressOwner;
 
         log.info("Change Ethereum owner address from [%s] to new address = [%s]", addressOwner, newAddressOwner);
-        blockChainService.changeOwner(new Address(newAddressOwner, false));
+        blockChainService.invokeSmartContractChangeOwner(new Address(newAddressOwner, false));
     }
 
     public int getTrustIndicatorToAddress(Address addressTo) {
