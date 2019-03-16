@@ -25,10 +25,17 @@ public class TrustIndicatorWalletTest {
     @Mock
     private BlockChainService blockChainService;
 
+    private final Address addressA = new Address("A", false);
+    private final Address addressB = new Address("B", false);
+    private final Address addressC = new Address("C", false);
+    private final Address addressD = new Address("D", false);
+    private final Address addressE = new Address("E", false);
+    private final Address addressF = new Address("F", false);
+
     @Before
     public void setup() {
         blockChainList = createBlockChain();
-        trustIndicatorWallet = new TrustIndicatorWallet("A", 0);
+        trustIndicatorWallet = new TrustIndicatorWallet("A", 0, false);
         trustIndicatorWallet.setBlockChainService(blockChainService);
     }
 
@@ -37,9 +44,9 @@ public class TrustIndicatorWalletTest {
         // when
         when(blockChainService.fetchBlockChain()).thenReturn(blockChainList);
 
-        final int trustIndicatorFromOwnerToB = trustIndicatorWallet.getTrustIndicatorToAddress("B");
-        final int trustIndicatorFromOwnerToC = trustIndicatorWallet.getTrustIndicatorToAddress("C");
-        final int trustIndicatorFromOwnerToD = trustIndicatorWallet.getTrustIndicatorToAddress("D");
+        final int trustIndicatorFromOwnerToB = trustIndicatorWallet.getTrustIndicatorToAddress(addressB);
+        final int trustIndicatorFromOwnerToC = trustIndicatorWallet.getTrustIndicatorToAddress(addressC);
+        final int trustIndicatorFromOwnerToD = trustIndicatorWallet.getTrustIndicatorToAddress(addressD);
 
         verify(blockChainService, times(3)).fetchBlockChain();
 
@@ -53,18 +60,18 @@ public class TrustIndicatorWalletTest {
         // when
         when(blockChainService.fetchBlockChain()).thenReturn(blockChainList);
 
-        final int trustIndicatorAB = trustIndicatorWallet.getTrustIndicatorBetweenAddresses("A", "B");
-        final int trustIndicatorAC = trustIndicatorWallet.getTrustIndicatorBetweenAddresses("A", "C");
-        final int trustIndicatorAD = trustIndicatorWallet.getTrustIndicatorBetweenAddresses("A", "D");
-        final int trustIndicatorAE = trustIndicatorWallet.getTrustIndicatorBetweenAddresses("A", "E");
-        final int trustIndicatorAF = trustIndicatorWallet.getTrustIndicatorBetweenAddresses("A", "F");
-        final int trustIndicatorBC = trustIndicatorWallet.getTrustIndicatorBetweenAddresses("B", "C");
-        final int trustIndicatorBD = trustIndicatorWallet.getTrustIndicatorBetweenAddresses("B", "D");
-        final int trustIndicatorBE = trustIndicatorWallet.getTrustIndicatorBetweenAddresses("B", "E");
-        final int trustIndicatorBF = trustIndicatorWallet.getTrustIndicatorBetweenAddresses("B", "F");
-        final int trustIndicatorCD = trustIndicatorWallet.getTrustIndicatorBetweenAddresses("C", "D");
-        final int trustIndicatorCE = trustIndicatorWallet.getTrustIndicatorBetweenAddresses("C", "E");
-        final int trustIndicatorCF = trustIndicatorWallet.getTrustIndicatorBetweenAddresses("C", "F");
+        final int trustIndicatorAB = trustIndicatorWallet.getTrustIndicatorBetweenAddresses(addressA, addressB);
+        final int trustIndicatorAC = trustIndicatorWallet.getTrustIndicatorBetweenAddresses(addressA, addressC);
+        final int trustIndicatorAD = trustIndicatorWallet.getTrustIndicatorBetweenAddresses(addressA, addressD);
+        final int trustIndicatorAE = trustIndicatorWallet.getTrustIndicatorBetweenAddresses(addressA, addressE);
+        final int trustIndicatorAF = trustIndicatorWallet.getTrustIndicatorBetweenAddresses(addressA, addressF);
+        final int trustIndicatorBC = trustIndicatorWallet.getTrustIndicatorBetweenAddresses(addressB, addressC);
+        final int trustIndicatorBD = trustIndicatorWallet.getTrustIndicatorBetweenAddresses(addressB, addressD);
+        final int trustIndicatorBE = trustIndicatorWallet.getTrustIndicatorBetweenAddresses(addressB, addressE);
+        final int trustIndicatorBF = trustIndicatorWallet.getTrustIndicatorBetweenAddresses(addressB, addressF);
+        final int trustIndicatorCD = trustIndicatorWallet.getTrustIndicatorBetweenAddresses(addressC, addressD);
+        final int trustIndicatorCE = trustIndicatorWallet.getTrustIndicatorBetweenAddresses(addressC, addressE);
+        final int trustIndicatorCF = trustIndicatorWallet.getTrustIndicatorBetweenAddresses(addressC, addressF);
 
         // then
         verify(blockChainService, times(12)).fetchBlockChain();
@@ -83,17 +90,28 @@ public class TrustIndicatorWalletTest {
         assertThat(trustIndicatorCF, is(3));
     }
 
+    @Test
+    public void testTransferToAccountWhenExcludingCalculation() {
+        // given
+        final Address addressG = new Address("G", true);
+
+        // when
+        trustIndicatorWallet.transfer(addressG, 20);
+
+        // then
+        verify(blockChainService).invokeSmartContractTransfer(addressG, 20);
+    }
+
     private List<BlockNode> createBlockChain() {
-        // A-> B
-        final BlockNode genesisBlockN1 = new BlockNode("A", "B", 100, sha256Hex("AB"), "0");
+        final BlockNode genesisBlockN1 = new BlockNode(addressA, addressB, 100, sha256Hex("AB"), "0");
         // B -> C
-        final BlockNode blockN2 = new BlockNode("B", "C", 500, sha256Hex("BC"), genesisBlockN1.getHash());
+        final BlockNode blockN2 = new BlockNode(addressB, addressC, 500, sha256Hex("BC"), genesisBlockN1.getHash());
         // C -> D
-        final BlockNode blockN3 = new BlockNode("C", "D", 20, sha256Hex("CD"), blockN2.getHash());
+        final BlockNode blockN3 = new BlockNode(addressC, addressD, 20, sha256Hex("CD"), blockN2.getHash());
         // D -> E
-        final BlockNode blockN4 = new BlockNode("D", "E", 50, sha256Hex("DE"), blockN3.getHash());
+        final BlockNode blockN4 = new BlockNode(addressD, addressE, 50, sha256Hex("DE"), blockN3.getHash());
         // E -> F
-        final BlockNode blockN5 = new BlockNode("E", "F", 25, sha256Hex("EF"), blockN4.getHash());
+        final BlockNode blockN5 = new BlockNode(addressE, addressF, 25, sha256Hex("EF"), blockN4.getHash());
 
         blockChainList = new LinkedList<>();
         blockChainList.add(genesisBlockN1);

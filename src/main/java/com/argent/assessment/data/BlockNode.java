@@ -8,8 +8,8 @@ import static java.time.Instant.now;
 
 @Data
 public class BlockNode {
-    public final String addressFrom;
-    public final String addressTo;
+    public final Address addressFrom;
+    public final Address addressTo;
     public final int value;
     public final String hash;
     public final String previousHash;

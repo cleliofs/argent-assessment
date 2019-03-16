@@ -40,15 +40,22 @@ public class BlockChain {
     }
 
     private void createBlockChain() {
-        final BlockNode genesisBlockN1 = new BlockNode("A", "B", 100, sha256Hex("AB"), "0");
+        final Address addressA = new Address("A", false);
+        final Address addressB = new Address("B", false);
+        final Address addressC = new Address("C", false);
+        final Address addressD = new Address("D", false);
+        final Address addressE = new Address("E", false);
+        final Address addressF = new Address("F", false);
+
+        final BlockNode genesisBlockN1 = new BlockNode(addressA, addressB, 100, sha256Hex("AB"), "0");
         // B -> C
-        final BlockNode blockN2 = new BlockNode("B", "C", 500, sha256Hex("BC"), genesisBlockN1.getHash());
+        final BlockNode blockN2 = new BlockNode(addressB, addressC, 500, sha256Hex("BC"), genesisBlockN1.getHash());
         // C -> D
-        final BlockNode blockN3 = new BlockNode("C", "D", 20, sha256Hex("CD"), blockN2.getHash());
+        final BlockNode blockN3 = new BlockNode(addressC, addressD, 20, sha256Hex("CD"), blockN2.getHash());
         // D -> E
-        final BlockNode blockN4 = new BlockNode("D", "E", 50, sha256Hex("DE"), blockN3.getHash());
+        final BlockNode blockN4 = new BlockNode(addressD, addressE, 50, sha256Hex("DE"), blockN3.getHash());
         // E -> F
-        final BlockNode blockN5 = new BlockNode("E", "F", 25, sha256Hex("EF"), blockN4.getHash());
+        final BlockNode blockN5 = new BlockNode(addressE, addressF, 25, sha256Hex("EF"), blockN4.getHash());
 
         blockChainList.add(genesisBlockN1);
         blockChainList.add(blockN2);
