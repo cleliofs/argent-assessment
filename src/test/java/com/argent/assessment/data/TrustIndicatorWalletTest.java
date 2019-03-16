@@ -102,6 +102,18 @@ public class TrustIndicatorWalletTest {
         verify(blockChainService).invokeSmartContractTransfer(addressG, 20);
     }
 
+    @Test
+    public void testChangeOwnerAddressUsingWallet() {
+        // given
+        final String newOwnerAddress = "B";
+
+        // when
+        trustIndicatorWallet.changeOwner(newOwnerAddress);
+
+        // then
+        verify(blockChainService).invokeSmartContractChangeOwner(new Address(newOwnerAddress, false));
+    }
+
     private List<BlockNode> createBlockChain() {
         final BlockNode genesisBlockN1 = new BlockNode(addressA, addressB, 100, sha256Hex("AB"), "0");
         // B -> C
