@@ -28,9 +28,12 @@ First and foremost, one should modularise all services into micro-services where
 
 AWS can integrate building blocks (micro-services) that support any application architecture, regardless of scale, load, or complexity.   
 
+Currently, AWS provides two well defined, consisted and well-proven microservices solutions that serve many production ready applications/systems. I would like to proposed and discuss those two different approaches, commonly used in distributed AWS cloud computing ecosystem:  
+
+
 _(A)_ AWS ECS containers (EC2 instances):
 
-AWS can provide container-based service that  highly scalable, high performance container management service that supports Docker containers and allows you to easily run applications on a managed cluster of Amazon EC2 instances.
+AWS can provide container-based service that highly scalable, high performance container management service that supports Docker containers and allows you to easily run applications on a managed cluster of Amazon EC2 instances. Amazon ECS lets you easily build all types of containerized applications, from long-running applications and microservices to batch jobs and machine learning applications.
 
 With that architecture in mind, a proposed AWS container-based scalable platform could run Java applications via Spring Boot micro-services exposing REST APIs integration. Each service would be compromised of several AWS EC2 instances running in a container (such as Docker) and they would sit behind a AWS ELB (Elastic Load Balance) services where traffic and load would be evenly distributed across all instances of the "cluster". That is acommon approach used by many AWS customers where they rely on the Elastic Load Balancing (ELB) Application Load Balancer together with Amazon EC2 Container Service (Amazon ECS) and Auto Scaling to implement a microservices application.
 
@@ -38,7 +41,7 @@ _Note:_ ELB automatically distributes incoming application traffic across multip
 
 AWS ELB would interact with API Gateway Internet-facing gateway that would expose to end-users the hidden intranet (VPC - Virtual Private Cloud) back-end services. 
 
-Also, in order to provide a better availability of services with minimum or zero-downtime (i.e. outages), the services running in docker containers can be located in different Availability Zones (AZ) and, in an unlikely, even of a crash of a certain AWS AZ region, the damage would be prevented once the services would be cross zones/regions.
+Also, in order to provide a better availability of services with minimum or zero-downtime (i.e. outages), the services running in docker containers can be located in different Availability Zones (AZ) and, in an unlikely, even of a crash of a certain AWS AZ region, the damage would be prevented once the services would be cross zones/regions. Amazon ECS container instances are scaled out and scaled in, depending on the load or the number of incoming requests. Elastic scaling allows the system to be run in a cost-efficient way and also helps protect against denial of service (DoS) attacks.
 
 The diagram below illustrates the _(A)_ AWS ECS containers approach:
 
@@ -46,11 +49,11 @@ The diagram below illustrates the _(A)_ AWS ECS containers approach:
 
 
 
-_(B)_ Serverless:
+_(B)_ Serverless Microservices:
 
 AWS Lambda lets you run code without provisioning or managing servers. Just upload your code and Lambda manages everything that is required to run and scale your code with high availability.
 
-AWS Lambdas would be triggers via HTTP requests coming from AWS API Gateway. 
+AWS Lambdas would be triggers via HTTP requests coming from AWS API Gateway. Lambda is highly integrated with API Gateway. The possibility of making synchronous calls from API Gateway to AWS Lambda enables the creation of fully serverless applications. 
 
 _Note:_ A small drawback from this approach is what is called "cold starts" for AWS Lambdas. Cold start execution has a direct impact on the code execution time of an application. 
 
@@ -65,7 +68,7 @@ The diagram below shows how _(B)_ Serverless using AWS Lambda can be used:
 
 
 
-Back-end services running either via AWS ECS containers or AWS Lambdas would provide a "wrapper" layer on top of the Ethereum smart contracts deployed and running in the Ethereum network.
+Back-end services running either via AWS ECS containers or AWS Lambdas would provide a "wrapper" layer on top of the Ethereum smart contracts deployed and running in the Ethereum network. The "wrapper" back-end service would be exposed via API of a microservice which serves as the central entry point for all client requests. The application logic hides behind a set of programmatic interfaces, typically a RESTful web services API. This API accepts and processes calls from clients and might implement functionality such as traffic management, request filtering, routing, caching, and authentication and authorization.
 
 For both solutions a SSO services would authenticate and authorise the requests coming via the mobile Apps via a token. The token contains the identity from where the request is coming from and only the requester for the provided Ethereum account owner would be allowed to invoke the back-end services.
 
