@@ -4,7 +4,6 @@ import lombok.Data;
 
 @Data
 public class Address {
-
     public final String address;
     public final boolean trustIndicatorCalculationExclusion;
 }

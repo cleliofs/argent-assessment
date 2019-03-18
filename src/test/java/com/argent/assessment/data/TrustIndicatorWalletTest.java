@@ -1,6 +1,7 @@
 package com.argent.assessment.data;
 
 import com.argent.assessment.service.BlockChainService;
+import com.argent.assessment.service.TrustIndicatorWallet;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

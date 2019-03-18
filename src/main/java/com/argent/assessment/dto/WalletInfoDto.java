@@ -1,9 +1,8 @@
 package com.argent.assessment.dto;
 
-import com.argent.assessment.data.TrustIndicatorWallet;
+import com.argent.assessment.service.TrustIndicatorWallet;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 @Builder

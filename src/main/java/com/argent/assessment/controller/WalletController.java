@@ -2,10 +2,10 @@ package com.argent.assessment.controller;
 
 import com.argent.assessment.data.Address;
 import com.argent.assessment.dto.TrustIndicatorDto;
-import com.argent.assessment.data.TrustIndicatorWallet;
 import com.argent.assessment.dto.WalletInfoDto;
 import com.argent.assessment.dto.WalletTransferRequestDto;
 import com.argent.assessment.dto.WalletTransferResponseDto;
+import com.argent.assessment.service.TrustIndicatorWallet;
 import com.argent.assessment.service.ethereum.Web3JClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +17,7 @@ import java.util.concurrent.ExecutionException;
 
 import static com.argent.assessment.dto.WalletTransferResponseDto.TransferStatus.PENDING;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 /**
@@ -34,19 +35,19 @@ public class WalletController {
         this.trustIndicatorWallet = trustIndicatorWallet;
     }
 
-    @RequestMapping(value = "/trustIndicatorFromOwnerAddress", produces = APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/trustIndicatorFromOwnerAddress", method = GET, produces = APPLICATION_JSON_VALUE)
     public TrustIndicatorDto trustIndicatorFromOwnerAddress(@RequestParam(value = "addressTo") final String addressTo) {
-        final int trustLevel = trustIndicatorWallet.getTrustIndicatorToAddress(new Address(addressTo, false));
-        return new TrustIndicatorDto(trustIndicatorWallet.getAddressOwner(), addressTo, trustLevel);
+        final int trustIndicator = trustIndicatorWallet.getTrustIndicatorToAddress(new Address(addressTo, false));
+        return new TrustIndicatorDto(trustIndicatorWallet.getAddressOwner(), addressTo, trustIndicator);
     }
 
-    @RequestMapping(value = "/trustIndicatorFromTwoAddresses", produces = APPLICATION_JSON_VALUE)
-    public TrustIndicatorDto trustIndicatorFromTwoAddresses(@RequestParam(value = "addressFrom") final String addressFrom,
+    @RequestMapping(value = "/trustIndicatorBetweenAddresses", method = GET, produces = APPLICATION_JSON_VALUE)
+    public TrustIndicatorDto trustIndicatorBetweenAddresses(@RequestParam(value = "addressFrom") final String addressFrom,
                                                             @RequestParam(value = "addressTo") final String addressTo) {
-        final int trustLevel = trustIndicatorWallet.getTrustIndicatorBetweenAddresses(
+        final int trustIndicator = trustIndicatorWallet.getTrustIndicatorBetweenAddresses(
                 new Address(addressFrom, false),
                 new Address(addressTo, false));
-        return new TrustIndicatorDto(trustIndicatorWallet.getAddressOwner(), addressTo, trustLevel);
+        return new TrustIndicatorDto(addressFrom, addressTo, trustIndicator);
     }
 
     @RequestMapping(value = "/transfer/{addressTo}", method = POST, produces = APPLICATION_JSON_VALUE)
@@ -60,12 +61,12 @@ public class WalletController {
                 .build();
     }
 
-    @RequestMapping(value = "/info", produces = APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/info", method = GET, produces = APPLICATION_JSON_VALUE)
     public WalletInfoDto walletInfo() {
         return WalletInfoDto.fromWallet(trustIndicatorWallet);
     }
 
-    @RequestMapping("/client/version")
+    @RequestMapping(value = "/client/version", method = GET)
     public String getClientVersion() throws ExecutionException, InterruptedException {
         Web3j web3 = new Web3JClient().getWeb3j();
         // wait on async block

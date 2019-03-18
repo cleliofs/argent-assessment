@@ -52,6 +52,6 @@ public class BlockChainService implements IBlockChainService {
 
         final RemoteCall<TransactionReceipt> transactionReceiptRemoteCall = sendFunds(web3, credentials, addressTo.getAddress(), valueOf(value), ETHER);
         final TransactionReceipt transactionReceipt = transactionReceiptRemoteCall.sendAsync().get();
-        log.info("Transaction hash information = [%s]", transactionReceipt.getTransactionHash());
+        log.info("Transaction hash information = [{}]", transactionReceipt.getTransactionHash());
     }
 }

@@ -1,6 +1,7 @@
-package com.argent.assessment.data;
+package com.argent.assessment.service;
 
-import com.argent.assessment.service.BlockChainService;
+import com.argent.assessment.data.Address;
+import com.argent.assessment.data.BlockNode;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,26 +44,28 @@ public class TrustIndicatorWallet {
         if (!addressTo.trustIndicatorCalculationExclusion) {
             final int trustIndicatorToAddress = getTrustIndicatorToAddress(addressTo);
             if (trustIndicatorToAddress < trustIndicatorMinimum) {
-                log.warn(format("Transfer to address [%s] under minimum trust indicator of [%s]", addressTo, trustIndicatorMinimum));
+                log.warn(format("Transfer to address [{}] under minimum trust indicator of [{}]", addressTo, trustIndicatorMinimum));
             }
         }
 
-        log.info("Invoke Ethereum smart contract wallet to transfer = %s", value);
+        log.info("Invoke Ethereum smart contract wallet to transfer = {}", value);
         blockChainService.invokeSmartContractTransfer(addressTo, value);
     }
 
     public void changeOwner(String newAddressOwner) {
         this.addressOwner = newAddressOwner;
 
-        log.info("Change Ethereum owner address from [%s] to new address = [%s]", addressOwner, newAddressOwner);
+        log.info("Change Ethereum owner address from [{}] to new address = [{}]", addressOwner, newAddressOwner);
         blockChainService.invokeSmartContractChangeOwner(new Address(newAddressOwner, false));
     }
 
     public int getTrustIndicatorToAddress(Address addressTo) {
+        log.info("Get trust indicator from [{}] to address = [{}]", addressOwner, addressTo.getAddress());
         return geTrustIndicator(new Address(addressOwner, walletTrustIndicatorCalculationExclusion), addressTo);
     }
 
     public int getTrustIndicatorBetweenAddresses(Address addressFrom, Address addressTo) {
+        log.info("Get trust indicator from [{}] to address = [{}]", addressFrom.getAddress(), addressTo.getAddress());
         return geTrustIndicator(addressFrom, addressTo);
     }
 
