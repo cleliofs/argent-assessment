@@ -150,7 +150,7 @@ The application is based on Spring Boot framework using Java8 streams for manipu
 
 Java Lombok library has been used to cut the boilerplace code needed for Java _"@Data"_ class and other design patterns, such as _"@Builder"_ and immutable DTO (Data Transfer Object).
 
-The application can be easily executed via Java cli or inside of an IDE, such as Intellij (_Note:_ for Intellij IDEA, Lombok plugin is required). Alternatively, one can use SwaggerUI that has been provided in order to invoke _WalletController_ endpoints directly. 
+The application can be easily executed via Java cli or inside of an IDE, such as Intellij (_Note:_ for Intellij IDEA, Lombok plugin is required). Alternatively, one can use SwaggerUI that has been provided in order to invoke _WalletController_ endpoints directly via http://localhost:8080/swagger-ui.html#/wallet-controller. 
 
 
 
